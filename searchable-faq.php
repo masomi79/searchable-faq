@@ -13,6 +13,7 @@ namespace SearchableFAQ;
 use WP_Query;
 
 if (!defined('ABSPATH')) {
+    
     exit; // Exit if accessed directly
 }
 
@@ -262,7 +263,6 @@ class SearchableFAQ {
     }
     public function enqueue_faq_scripts() {
         wp_enqueue_script('faq-scripts', plugins_url('js/searchable-faq-scripts.js', __FILE__), array('jquery'), '1.0', true);
-        wp_localize_script('faq-scripts', 'faqAjax', array('ajaxurl' => admin_url('admin-ajax.php')));
     }
 
     //CSS読み込み
