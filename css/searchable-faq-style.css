@@ -2,6 +2,10 @@
     max-width: 100%;
 }
 
+.faq-category-title{
+    margin: 1em 0 0;
+}
+
 .faq-item{
     overflow: hidden;
 }
@@ -24,4 +28,18 @@
 
 .faq-item.active .faq-answer{
     display: block;
+}
+
+/*検索フォーム*/
+.faq-search-form{
+    text-align: center;
+    width: 100%
+}
+
+.faq-search-form input[type="text"]{
+    width: 40%;
+    padding: .5em;
+    border-radius: 10px;
+    border: solid #cdcdcd 1px;
+    max-width: 300px;
 }

@@ -144,7 +144,7 @@ class SearchableFAQ {
 
     }
 
-    //ショートコード
+    //FAQのレンダリング
     public function faq_shortcode($atts) {
         $atts = shortcode_atts(array(
             'categories' => '',
@@ -248,9 +248,9 @@ class SearchableFAQ {
         return '
             <div class="faq-search-form">
                 <input type="text" id="faq-search-input" placeholder="キーワードを入力してください">
-                <select id="faq-category-select">
+                <!-- select id="faq-category-select">
                     <option value="">All Categories</option>' . $this->get_faq_category_options() . '
-                </select>
+                </select -->
             </div>';
     }
     private function get_faq_category_options() {
