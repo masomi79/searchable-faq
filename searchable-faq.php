@@ -3,7 +3,7 @@
 Plugin Name: Searchable FAQ
 Plugin URI: http://github.com/masomi79/sarchable-faq
 Description: A simple FAQ plugin for WordPress
-Version: 7.5.8.1.1
+Version: 7.5.8.1.2
 Author: masomi79
 Author URI: https://massumifukuda.work/wp/
 License: GPL2
@@ -29,6 +29,7 @@ class SearchableFAQ {
         add_shortcode('faq_search_form', array($this,'faq_search_form_shortcode'));
         add_action('wp_footer', array($this, 'enqueue_faq_scripts'));
         add_action('template_redirect', array($this, 'display_faq_single'));
+        add_filter('pre_set_site_transient_update_plugins', 'check_for_plugin_update');
     }
 
 
@@ -270,11 +271,7 @@ class SearchableFAQ {
         wp_enqueue_style('faq-styles', plugins_url('css/searchable-faq-style.css', __FILE__), array('theme-styles'), '1.0', 'all');
     
     }
-}
 
-function searchable_faq_init() {
-    $searchable_faq = new SearchableFAQ();
-}
 
 function check_for_plugin_update($transient) {
     // GitHub API URL
@@ -290,7 +287,7 @@ function check_for_plugin_update($transient) {
         $latest_version = $data->tag_name;
         
         // 現在のバージョンと比較
-        if (version_compare($latest_version, '1.0', '>')) { // 現在のバージョンは1.0と仮定
+        if (version_compare($latest_version, '0.0', '>')) { // 現在のバージョンは1.0と仮定
             $plugin_slug = 'searchable-faq';
             $transient->response[$plugin_slug] = (object) array(
                 'slug' => $plugin_slug,
@@ -304,7 +301,14 @@ function check_for_plugin_update($transient) {
     return $transient;
 }
 
-add_filter('pre_set_site_transient_update_plugins', 'check_for_plugin_update');
+
+
+}
+
+function searchable_faq_init() {
+    $searchable_faq = new SearchableFAQ();
+}
+
 
 
 add_action('plugins_loaded', 'SearchableFAQ\\searchable_faq_init');
