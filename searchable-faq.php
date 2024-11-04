@@ -29,7 +29,7 @@ class SearchableFAQ {
         add_shortcode('faq_search_form', array($this,'faq_search_form_shortcode'));
         add_action('wp_footer', array($this, 'enqueue_faq_scripts'));
         add_action('template_redirect', array($this, 'display_faq_single'));
-        add_filter('pre_set_site_transient_update_plugins', 'check_for_plugin_update');
+        // add_filter('pre_set_site_transient_update_plugins', 'check_for_plugin_update');
     }
 
 
@@ -272,34 +272,35 @@ class SearchableFAQ {
     
     }
 
+    /*
+    function check_for_plugin_update($transient) {
+        // GitHub API URL
+        $response = wp_remote_get('https://api.github.com/repos/masomi79/searchable-faq/releases/latest');
+        
+        if (is_wp_error($response)) {
+            return $transient;
+        }
 
-function check_for_plugin_update($transient) {
-    // GitHub API URL
-    $response = wp_remote_get('https://api.github.com/repos/masomi79/searchable-faq/releases/latest');
-    
-    if (is_wp_error($response)) {
+        $data = json_decode(wp_remote_retrieve_body($response));
+        
+        if (isset($data->tag_name)) {
+            $latest_version = $data->tag_name;
+            
+            // 現在のバージョンと比較
+            if (version_compare($latest_version, '0.0', '>')) { // 現在のバージョンは1.0と仮定
+                $plugin_slug = 'searchable-faq';
+                $transient->response[$plugin_slug] = (object) array(
+                    'slug' => $plugin_slug,
+                    'new_version' => $latest_version,
+                    'url' => $data->html_url,
+                    'package' => $data->zipball_url,
+                );
+            }
+        }
+        
         return $transient;
     }
-
-    $data = json_decode(wp_remote_retrieve_body($response));
-    
-    if (isset($data->tag_name)) {
-        $latest_version = $data->tag_name;
-        
-        // 現在のバージョンと比較
-        if (version_compare($latest_version, '0.0', '>')) { // 現在のバージョンは1.0と仮定
-            $plugin_slug = 'searchable-faq';
-            $transient->response[$plugin_slug] = (object) array(
-                'slug' => $plugin_slug,
-                'new_version' => $latest_version,
-                'url' => $data->html_url,
-                'package' => $data->zipball_url,
-            );
-        }
-    }
-    
-    return $transient;
-}
+    */
 
 
 
