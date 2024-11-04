@@ -286,15 +286,3 @@ function activate_searchable_faq(){
 
 function deactivate_searchable_faq(){
 }
-
-require 'plugin-update-checker-master/plugin-update-checker.php';
-
-$myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
-    'https://github.com/masomi79/serchable-faq/',
-    __FILE__,
-    'searchable-faq'
-);
-
-
-// 安定版ブランチを指定
-$myUpdateChecker->setBranch('master'); // または適切なブランチ名
