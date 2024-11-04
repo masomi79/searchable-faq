@@ -1,0 +1,27 @@
+.faq-container{
+    max-width: 100%;
+}
+
+.faq-item{
+    overflow: hidden;
+}
+
+.faq-question {
+    background-color: #cdcdcd;
+    padding: 1em;
+    margin: 0;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.faq-answer{
+    background: #dfdfdf;
+    overflow: hidden;
+    padding: 1em;
+    display: none;
+}
+
+.faq-item.active .faq-answer{
+    display: block;
+}
