@@ -5,7 +5,7 @@ Plugin URI: http://github.com/masomi79/sarchable-faq
 Description: A simple FAQ plugin for WordPress
 Version: 7.5.8.1
 Author: masomi79
-Author URI: https://massumifukuda.work/
+Author URI: https://massumifukuda.work/wp/
 License: GPL2
 */
 namespace SearchableFAQ;
@@ -276,7 +276,6 @@ function searchable_faq_init() {
     $searchable_faq = new SearchableFAQ();
 }
 
-add_filter('pre_set_site_transient_update_plugins', 'check_for_plugin_update');
 function check_for_plugin_update($transient) {
     // GitHub API URL
     $response = wp_remote_get('https://api.github.com/repos/masomi79/searchable-faq/releases/latest');
@@ -305,6 +304,7 @@ function check_for_plugin_update($transient) {
     return $transient;
 }
 
+add_filter('pre_set_site_transient_update_plugins', 'check_for_plugin_update');
 
 
 add_action('plugins_loaded', 'SearchableFAQ\\searchable_faq_init');
