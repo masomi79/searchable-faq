@@ -10,7 +10,7 @@
     overflow: hidden;
 }
 
-.faq-question {
+.faq-container .faq-question {
     background-color: #cdcdcd;
     padding: 1em;
     margin: 0;
@@ -19,14 +19,14 @@
     font-weight: bold;
 }
 
-.faq-answer{
+.faq-container .faq-answer{
     background: #dfdfdf;
     overflow: hidden;
     padding: 1em;
     display: none;
 }
 
-.faq-item.active .faq-answer{
+.faq-container .faq-item.active .faq-answer{
     display: block;
 }
 
