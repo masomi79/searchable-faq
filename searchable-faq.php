@@ -3,7 +3,7 @@
 Plugin Name: Searchable FAQ
 Plugin URI: http://github.com/masomi79/sarchable-faq
 Description: A simple FAQ plugin for WordPress
-Version: 7.5.8.1
+Version: 7.5.8.1.1
 Author: masomi79
 Author URI: https://massumifukuda.work/wp/
 License: GPL2
