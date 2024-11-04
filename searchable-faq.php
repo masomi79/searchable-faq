@@ -277,7 +277,7 @@ function searchable_faq_init() {
 
 add_action('plugins_loaded', 'SearchableFAQ\\searchable_faq_init');
 register_activation_hook(__FILE__, 'SearchableFAQ\\activate_searchable_faq');
-register_deactivation_hook(__FILE__, 'SearchableFAQ\\desactivate_searchable_faq');
+register_deactivation_hook(__FILE__, 'SearchableFAQ\\deactivate_searchable_faq');
 
 function activate_searchable_faq(){
 }
