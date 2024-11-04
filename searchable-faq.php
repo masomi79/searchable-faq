@@ -102,7 +102,7 @@ class SearchableFAQ {
         );
         register_taxonomy('faq_category', array('faq'), $args);
     }
-
+/*
     //回答をFAQとは別に管理する
     public function add_faq_meta_boxes() {
         add_meta_box(
@@ -127,6 +127,7 @@ class SearchableFAQ {
         echo '<p>FAQの回答を入力してください</p>';
 
     }
+
     public function save_faq_meta($post_id) {
         
         error_log('save_faq_meta function was called' . $post_id);
@@ -145,7 +146,7 @@ class SearchableFAQ {
         }
 
     }
-
+*/
     //FAQのレンダリング
     public function faq_shortcode($atts) {
         $atts = shortcode_atts(array(
@@ -181,8 +182,8 @@ class SearchableFAQ {
             $current_category = '';
             echo '<div class="faq-container">';
             while ($faq_query->have_posts()) : $faq_query->the_post();
-                $answer = get_post_meta(get_the_ID(), '_faq_answer', true);
-                $excerpt = wp_trim_words($answer, 50, '...');
+//                $answer = get_post_meta(get_the_ID(), '_faq_answer', true);
+                $content = wp_trim_words(/*$answer*/get_the_content(), 200, '...');
                 $categories = get_the_terms(get_the_ID(), 'faq_category');
                 if ($categories && !is_wp_error($categories)){
                     $category = $categories[0];
@@ -198,7 +199,7 @@ class SearchableFAQ {
                 // $category_slugs = $categories ? wp_list_pluck($categories, 'slug') : array();
                 echo '<div class="faq-item" data-categories="' . esc_attr(implode(' ', $category_slugs)) . '">';
                 echo '<h3 class="faq-question">' . get_the_title() . '</h3>';
-                echo '<div class="faq-answer">' . esc_html($excerpt);
+                echo '<div class="faq-answer">' . esc_html($content);
                 echo '<a href="' . get_permalink() . '" class="faq-detail-link">詳細を見る</a>';
                 echo '</div>';
                 echo '</div>';
@@ -223,14 +224,16 @@ class SearchableFAQ {
 
             get_header();
 
+            echo '<div class="site-main">';
             echo '<div class="faq-single-container">';
             echo '<h1 class="faq-question">' . get_the_title() . '</h1>';
 
-            $answer = get_post_meta($post->ID, '_faq_answer', true);
+//            $answer = get_post_meta($post->ID, '_faq_answer', true);
 
-            echo '<div class="faq-answer">' . esc_html($answer) . '</div>';
+            echo '<div class="faq-answer">' . $post->post_content . '</div>';
 
             echo '<a href="' . home_url('/faq') . '">戻る</a>';
+            echo '</div>';
             echo '</div>';
 
             get_footer();
@@ -273,7 +276,34 @@ function searchable_faq_init() {
     $searchable_faq = new SearchableFAQ();
 }
 
+add_filter('pre_set_site_transient_update_plugins', 'check_for_plugin_update');
+function check_for_plugin_update($transient) {
+    // GitHub API URL
+    $response = wp_remote_get('https://api.github.com/repos/masomi79/searchable-faq/releases/latest');
+    
+    if (is_wp_error($response)) {
+        return $transient;
+    }
 
+    $data = json_decode(wp_remote_retrieve_body($response));
+    
+    if (isset($data->tag_name)) {
+        $latest_version = $data->tag_name;
+        
+        // 現在のバージョンと比較
+        if (version_compare($latest_version, '1.0', '>')) { // 現在のバージョンは1.0と仮定
+            $plugin_slug = 'searchable-faq';
+            $transient->response[$plugin_slug] = (object) array(
+                'slug' => $plugin_slug,
+                'new_version' => $latest_version,
+                'url' => $data->html_url,
+                'package' => $data->zipball_url,
+            );
+        }
+    }
+    
+    return $transient;
+}
 
 
 
