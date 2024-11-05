@@ -205,7 +205,7 @@ class SearchableFAQ {
             echo '<div class="faq-single-container">';
             echo '<h1 class="faq-question">' . get_the_title() . '</h1>';
             echo '<div class="faq-answer">' . $post->post_content . '</div>';
-            echo '<a href="' . home_url('/faq') . '">戻る</a>';
+            echo '<a href="' . home_url('/faq-p') . '">戻る</a>';
             echo '</div>';
             echo '</div>';
 
