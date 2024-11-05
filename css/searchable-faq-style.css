@@ -30,6 +30,11 @@
     display: block;
 }
 
+.faq-single-container{
+    margin: 0 auto 2rem;
+    max-width: 1024px;
+}
+
 /*検索フォーム*/
 .faq-search-form{
     text-align: center;

@@ -3,7 +3,7 @@
 Plugin Name: Searchable FAQ
 Plugin URI: http://github.com/masomi79/sarchable-faq
 Description: A simple FAQ plugin for WordPress
-Version: 7.5.8.1.3
+Version: 7.5.8.2
 Author: masomi79
 Author URI: https://massumifukuda.work/wp/
 License: GPL2
@@ -21,6 +21,7 @@ class SearchableFAQ {
     public function __construct() {
         add_action('init', array($this, 'register_faq_post_type'));
         add_action('init', array($this, 'register_faq_taxonomy'));
+        add_action('init', array($this, 'register_faq_tags'));
         add_shortcode('faq', array($this, 'faq_shortcode'));
         add_action('wp_enqueue_scripts', array($this, 'enqueue_faq_styles'));
         add_action('wp_enqueue_scripts', array($this, 'enqueue_faq_scripts'));
@@ -73,6 +74,7 @@ class SearchableFAQ {
         register_post_type('faq', $args);
     }
 
+    //階層カテゴリーを追加する
     public function register_faq_taxonomy(){
         $labels = array(
             'name'              => 'FAQ Ctegories',
@@ -98,6 +100,31 @@ class SearchableFAQ {
             )
         );
         register_taxonomy('faq_category', array('faq'), $args);
+    }
+
+    //非階層のタグを追加する
+    public function register_faq_tags() {
+        $labels = array(
+            'name'              => 'FAQ Tags',
+            'singular_name'     => 'FAQ Tag',
+            'search_items'      => 'Search FAQ Tags',
+            'all_items'         => 'All FAQ Tags',
+            'edit_item'         => 'Edit FAQ Tag',
+            'update_item'       => 'Update FAQ Tag',
+            'add_new_item'      => 'New FAQ Tag',
+            'new_item_name'     => 'New FAQ Tag Name',
+            'menu_name'         => 'FAQ Tags'
+        );
+
+        $args = array(
+            'hierarchical'      => false,
+            'labels'            => $labels,
+            'show_ui'           => true,
+            'show_admin_column' => true,
+            'query_var'         => true,
+            'rewrite'           => array('slug' => 'faq-tag')
+        );
+        register_taxonomy('faq_tag', array('faq'), $args);
     }
 
     //FAQのレンダリング
