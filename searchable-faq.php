@@ -3,7 +3,7 @@
 Plugin Name: Searchable FAQ
 Plugin URI: http://github.com/masomi79/sarchable-faq
 Description: A simple FAQ plugin for WordPress
-Version: 7.5.8.2.1
+Version: 7.5.8.2
 Author: masomi79
 Author URI: https://massumifukuda.work/wp/
 License: GPL2
@@ -28,6 +28,7 @@ class SearchableFAQ {
         add_shortcode('faq_search_form', array($this,'faq_search_form_shortcode'));
         add_action('wp_footer', array($this, 'enqueue_faq_scripts'));
         add_action('template_redirect', array($this, 'display_faq_single'));
+        add_action('wp_insert_post', array($this, 'set_default_view_count'), 10, 3);
     }
 
     public function register_faq_post_type(){
@@ -132,15 +133,17 @@ class SearchableFAQ {
         $atts = shortcode_atts(array(
             'categories' => '',
             'limit' => -1,
-            'order' => 'ASC',
-            'orderby' => 'menu_order'
+            'order' => 'DESC',
+            'orderby' => 'meta_alue_num',
+            'meta_key' => 'faq_view_count'
         ), $atts, 'faq');
 
         $args = array(
             'post_type' => 'faq',
             'posts_per_page' => $atts['limit'],
             'order' => $atts['order'],
-            'orderby' => $atts['orderby']
+            'orderby' => $atts['orderby'],
+            'meta_key' => $atts['meta_keys']
         );
 
         if (!empty($atts['categories'])) {
@@ -200,6 +203,11 @@ class SearchableFAQ {
         if (is_singular('faq')) {
             global $post;
 
+            //閲覧回数を処理
+            $view_count = get_post_meta($post->ID, 'faq_view_count', true);
+            $view_count = $view_count ? $view_count + 1 : 1;
+            update_post_meta($post->ID, 'faq_view_count', $view_count);
+
             get_header();
             echo '<div class="site-main">';
             echo '<div class="faq-single-container">';
@@ -241,6 +249,12 @@ class SearchableFAQ {
         wp_enqueue_style('theme-styles', get_stylesheet_uri());
         wp_enqueue_style('faq-styles', plugins_url('css/searchable-faq-style.css', __FILE__), array('theme-styles'), '1.0', 'all');
     
+    }
+    //閲覧数カウントをセットする
+    public function set_default_view_connt($post_id, $post, $update) {
+        if($post->post_type === 'faq' && !$update) {
+            add_post_meta($post_id, 'faq_view_count', 0, true);
+        }
     }
 
 }
