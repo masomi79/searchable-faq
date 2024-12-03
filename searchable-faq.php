@@ -134,67 +134,60 @@ class SearchableFAQ {
             'categories' => '',
             'limit' => -1,
             'order' => 'DESC',
-            'orderby' => 'meta_alue_num',
+            'orderby' => 'meta_value_num',
             'meta_key' => 'faq_view_count'
         ), $atts, 'faq');
-
-        $args = array(
-            'post_type' => 'faq',
-            'posts_per_page' => $atts['limit'],
-            'order' => $atts['order'],
-            'orderby' => $atts['orderby'],
-            'meta_key' => $atts['meta_keys']
-        );
-
-        if (!empty($atts['categories'])) {
-            $category_slugs = explode(',', $atts['categories']);
-            $args['tax_query'] = array(
-                array(
-                    'taxonomy' => 'faq_category',
-                    'field' => 'slug',
-                    'terms' => explode(',', $atts['categories'])
+    
+        $category_slugs = !empty($atts['categories']) ? explode(',', $atts['categories']) : array();
+    
+        ob_start();
+        echo '<div class="faq-container">';
+    
+        foreach ($category_slugs as $category_slug) {
+            $args = array(
+                'post_type' => 'faq',
+                'posts_per_page' => $atts['limit'],
+                'order' => $atts['order'],
+                'orderby' => $atts['orderby'],
+                'meta_key' => $atts['meta_key'],
+                'tax_query' => array(
+                    array(
+                        'taxonomy' => 'faq_category',
+                        'field' => 'slug',
+                        'terms' => $category_slug
+                    )
                 )
             );
-        }
-
-        $faq_query = new WP_Query($args);
-
-        ob_start();
-
-        if ($faq_query->have_posts()):
-            $current_category = '';
-            echo '<div class="faq-container">';
-            while ($faq_query->have_posts()) : $faq_query->the_post();
-                $content = wp_trim_words(get_the_content(), 200, '...');
-                $categories = get_the_terms(get_the_ID(), 'faq_category');
-                if ($categories && !is_wp_error($categories)){
-                    $category = $categories[0];
-                    if($current_category !== $category->name) {
-                        if(!empty($current_category)) {
-                            echo '</div>';
-                        }
-                        echo '<h2 class="faq-category-title">' . esc_html($category->name) . '</h2>';
-                        echo '<div class="faq-category-container">';
-                        $current_category = $category->name;
-                    }
-                }
-                echo '<div class="faq-item" data-categories="' . esc_attr(implode(' ', $category_slugs)) . '">';
-                echo '<h3 class="faq-question">' . get_the_title() . '</h3>';
-                echo '<div class="faq-answer">' . esc_html($content);
-                echo '<a href="' . get_permalink() . '" class="faq-detail-link">詳細を見る</a>';
-                echo '</div>';
-                echo '</div>';
-            endwhile;
-            if (!empty($current_category)){
+    
+            $faq_query = new WP_Query($args);
+    
+            if ($faq_query->have_posts()) {
+                $category = get_term_by('slug', $category_slug, 'faq_category');
+                echo '<h2 class="faq-category-title">' . esc_html($category->name) . '</h2>';
+                echo '<div class="faq-category-container">';
+    
+                while ($faq_query->have_posts()) : $faq_query->the_post();
+                    $content = wp_trim_words(get_the_content(), 200, '...');
+                    $view_count = get_post_meta(get_the_ID(), 'faq_view_count', true);
+                    $view_count = $view_count ? $view_count : '0';
+    
+                    echo '<div class="faq-item">';
+                    echo '<h3 class="faq-question">' . get_the_title();
+                    echo '<span class="faq-view-count">(' . esc_html($view_count) . ')</span>';
+                    echo '</h3>';
+                    echo '<div class="faq-answer">' . esc_html($content);
+                    echo '<a href="' . get_permalink() . '" class="faq-detail-link">詳細を見る</a>';
+                    echo '</div>';
+                    echo '</div>';
+                endwhile;
+    
                 echo '</div>';
             }
-            echo '</div>';
-        else :
-            echo 'No FAQs found.';
-        endif;
-
-        wp_reset_postdata();
-
+    
+            wp_reset_postdata();
+        }
+    
+        echo '</div>';
         return ob_get_clean();
     }
 
@@ -213,7 +206,8 @@ class SearchableFAQ {
             echo '<div class="faq-single-container">';
             echo '<h1 class="faq-question">' . get_the_title() . '</h1>';
             echo '<div class="faq-answer">' . $post->post_content . '</div>';
-            echo '<a href="' . home_url('/faq-p') . '">戻る</a>';
+            echo '<p><a href="' . home_url('/faq-p') . '">戻る</a></p>';
+            echo '<p>閲覧数：' . $view_count . '</p>';
             echo '</div>';
             echo '</div>';
 
