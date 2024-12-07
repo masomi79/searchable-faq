@@ -245,7 +245,7 @@ class SearchableFAQ {
     
     }
     //閲覧数カウントをセットする
-    public function set_default_view_connt($post_id, $post, $update) {
+    public function set_default_view_count($post_id, $post, $update) {
         if($post->post_type === 'faq' && !$update) {
             add_post_meta($post_id, 'faq_view_count', 0, true);
         }
