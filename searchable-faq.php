@@ -209,7 +209,20 @@ class SearchableFAQ {
 
             //タグの処理
             echo '<div class="faq-tags">';
-            the_tags('<p>タグ： ',',','</p>');
+
+            $tags = get_the_terms($post->ID, 'faq_tag');
+
+            if ($tags && !is_wp_error($tags)) {
+                $tag_links = array();
+                foreach($tags as $tag){
+                    $tag_links[] = '<a href="' . esc_url(get_term_link($tag)) . '">' . esc_html($tag->name) . '</a>';
+                }
+
+                echo '<p>Tags :' . implode(', ', $tag_links) . '</p>';
+            }else{
+                echo '<br class="notags">';
+            }
+
             echo '</div>';
 
             echo '<p><a href="' . home_url('/faq-p') . '">戻る</a></p>';
