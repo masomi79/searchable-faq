@@ -206,6 +206,12 @@ class SearchableFAQ {
             echo '<div class="faq-single-container">';
             echo '<h1 class="faq-question">' . get_the_title() . '</h1>';
             echo '<div class="faq-answer">' . $post->post_content . '</div>';
+
+            //タグの処理
+            echo '<div class="faq-tags">';
+            the_tags('<p>タグ： ',',','</p>');
+            echo '</div>';
+
             echo '<p><a href="' . home_url('/faq-p') . '">戻る</a></p>';
             echo '<p>閲覧数：' . $view_count . '</p>';
             echo '</div>';
