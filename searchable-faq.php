@@ -28,6 +28,7 @@ class SearchableFAQ {
         add_shortcode('faq_search_form', array($this,'faq_search_form_shortcode'));
         add_action('wp_footer', array($this, 'enqueue_faq_scripts'));
         add_action('template_redirect', array($this, 'display_faq_single'));
+        add_action('template_redirect', array($this, 'load_taxonomy_template'));
         add_action('wp_insert_post', array($this, 'set_default_view_count'), 10, 3);
     }
 
@@ -267,6 +268,14 @@ class SearchableFAQ {
     public function set_default_view_count($post_id, $post, $update) {
         if($post->post_type === 'faq' && !$update) {
             add_post_meta($post_id, 'faq_view_count', 0, true);
+        }
+    }
+
+    //tagごとの一覧ページのテンプレートを読み込む
+    public function load_taxonomy_template(){
+        if (is_tax('faq_tag')){
+            include(plugin_ir_path(__FILE__) . 'taxonomy-faq_tag.php');
+            exit;
         }
     }
 
