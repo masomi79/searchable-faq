@@ -203,7 +203,7 @@ class SearchableFAQ {
             update_post_meta($post->ID, 'faq_view_count', $view_count);
 
             get_header();
-            echo '<div class="site-main has-global-padding">';
+            echo '<div class="site-main entry-content has-global-padding">';
             echo '<div class="faq-single-container">';
             echo '<h1 class="faq-question">' . get_the_title() . '</h1>';
             echo '<div class="faq-answer">' . $post->post_content . '</div>';

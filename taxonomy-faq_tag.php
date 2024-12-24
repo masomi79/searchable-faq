@@ -1,5 +1,5 @@
 <?php  get_header(); ?>
-<div class="site-main has-global-padding faq-container">
+<div class="site-main has-global-padding faq-container entry-content">
     <h2 class="faq_tag-title">FAQタグ:<?php single_term_title(); ?></h2>
     <div class="faq-list">
         <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
