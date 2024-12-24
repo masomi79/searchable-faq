@@ -52,3 +52,9 @@
     border: solid #cdcdcd 1px;
     max-width: 300px;
 }
+
+/* tag関連 */
+.faq_tag-title{
+    font-weight: 1;
+    margin: .5em 0;
+}
