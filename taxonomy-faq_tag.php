@@ -1,6 +1,6 @@
 <?php  get_header(); ?>
 <div class="site-main">
-    <h1><?php single_term_title(); ?></h1>
+    <h1>タグ：<?php single_term_title(); ?></h1>
     <div class="faq-list">
         <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
             <div class="faq-item">
@@ -8,7 +8,7 @@
                 <div><?php the_excerpt(); ?></div>
             </div>
         <?php endwhile; else : ?>
-            <p>No FAQs found.</p>
+            <p>このタグのついたFAQはありません。</p>
         <?php endif; ?>
     </div>
 </div>

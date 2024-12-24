@@ -272,9 +272,9 @@ class SearchableFAQ {
     }
 
     //tagごとの一覧ページのテンプレートを読み込む
-    public function load_taxonomy_template(){
-        if (is_tax('faq_tag')){
-            include(plugin_ir_path(__FILE__) . 'taxonomy-faq_tag.php');
+    public function load_taxonomy_template() {
+        if (is_tax('faq_tag')) {
+            include(plugin_dir_path(__FILE__) . 'taxonomy-faq_tag.php');
             exit;
         }
     }
