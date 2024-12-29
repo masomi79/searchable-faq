@@ -168,7 +168,7 @@ class SearchableFAQ {
                 echo '<div class="faq-category-container">';
     
                 while ($faq_query->have_posts()) : $faq_query->the_post();
-                    $content = wp_trim_words(get_the_content(), 200, '...');
+                    $content = get_the_content();
                     $view_count = get_post_meta(get_the_ID(), 'faq_view_count', true);
                     $view_count = $view_count ? $view_count : '0';
     
@@ -176,9 +176,7 @@ class SearchableFAQ {
                     echo '<h3 class="faq-question">' . get_the_title();
                     echo '<span class="faq-view-count">(' . esc_html($view_count) . ')</span>';
                     echo '</h3>';
-                    echo '<div class="faq-answer">' . esc_html($content);
-                    echo '<a href="' . get_permalink() . '" class="faq-detail-link">詳細を見る</a>';
-                    echo '</div>';
+                    echo '<div class="faq-answer">' . $content . '</div>';
                     echo '</div>';
                 endwhile;
     
@@ -255,6 +253,7 @@ class SearchableFAQ {
     }
     public function enqueue_faq_scripts() {
         wp_enqueue_script('faq-scripts', plugins_url('js/searchable-faq-scripts.js', __FILE__), array('jquery'), '1.0', true);
+        wp_localize_script('faq-scripts', 'faqAjax', array('ajaxurl' => admin_url('admin-ajax.php')));
     }
 
     //CSS読み込み
@@ -288,6 +287,20 @@ function searchable_faq_init() {
 
 
 add_action('plugins_loaded', 'SearchableFAQ\\searchable_faq_init');
+add_action('wp_ajax_increment_faq_view_count', 'SearchableFAQ\\increment_faq_view_count');
+add_action('wp_ajax_nopriv_increment_faq_view_count', 'SearchableFAQ\\increment_faq_view_count');
+
+function increment_faq_view_count() {
+    if (isset($_POST['post_id'])) {
+        $post_id = intval($_POST['post_id']);
+        $view_count = get_post_meta($post_id, 'faq_view_count', true);
+        $view_count = $view_count ? $view_count + 1 : 1;
+        update_post_meta($post_id, 'faq_view_count', $view_count);
+        echo $view_count;
+    }
+    wp_die();
+}
+
 register_activation_hook(__FILE__, 'SearchableFAQ\\activate_searchable_faq');
 register_deactivation_hook(__FILE__, 'SearchableFAQ\\deactivate_searchable_faq');
 

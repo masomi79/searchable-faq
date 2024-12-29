@@ -2,7 +2,7 @@ jQuery(document).ready(function($){
     //アコーディオンの処理
     $('.faq-question').click(function(){
         console.log('clicked');
-        $(this).parent('.faq-item').toggleClass('active');
+        // $(this).parent('.faq-item').toggleClass('active');
     });
 
     //リアルタイム検索
@@ -26,4 +26,19 @@ jQuery(document).ready(function($){
 
     $('#faq-search-input').on('input', filterFAQs);
 //    $('#faq-category-select').on('change', filterFAQs);
+
+    $('.faq-question').on('click', function() {
+        var $answer = $(this).next('.faq-answer');
+        $answer.slideToggle();
+
+        if ($answer.is(':visible')) {
+            var post_id = $(this).closest('.faq-item').data('post-id');
+            $.post(faqAjax.ajaxurl, {
+                action: 'increment_faq_view_count',
+                post_id: post_id
+            }, function(response) {
+                $(this).find('.faq-view-count').text('(' + response + ')');
+            }.bind(this));
+        }
+    });
 });
