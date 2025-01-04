@@ -126,6 +126,7 @@ class SearchableFAQ {
             'query_var'         => true,
             'rewrite'           => array('slug' => 'faq-tag')
         );
+        
         register_taxonomy('faq_tag', array('faq'), $args);
     }
 
@@ -243,6 +244,7 @@ class SearchableFAQ {
                 </select -->
             </div>';
     }
+
     private function get_faq_category_options() {
         $categories = get_terms('faq_category');
         $options = "";
@@ -251,6 +253,7 @@ class SearchableFAQ {
         }
         return $options;
     }
+
     public function enqueue_faq_scripts() {
         wp_enqueue_script('faq-scripts', plugins_url('js/searchable-faq-scripts.js', __FILE__), array('jquery'), '1.0', true);
         wp_localize_script('faq-scripts', 'faqAjax', array('ajaxurl' => admin_url('admin-ajax.php')));
@@ -283,8 +286,6 @@ class SearchableFAQ {
 function searchable_faq_init() {
     $searchable_faq = new SearchableFAQ();
 }
-
-
 
 add_action('plugins_loaded', 'SearchableFAQ\\searchable_faq_init');
 add_action('wp_ajax_increment_faq_view_count', 'SearchableFAQ\\increment_faq_view_count');
