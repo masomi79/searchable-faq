@@ -172,7 +172,7 @@ class SearchableFAQ {
                     $view_count = get_post_meta(get_the_ID(), 'faq_view_count', true);
                     $view_count = $view_count ? $view_count : '0';
     
-                    echo '<div class="faq-item">';
+                    echo '<div class="faq-item" data-post-id="' . get_the_ID() . '">';
                     echo '<h3 class="faq-question">' . get_the_title();
                     echo '<span class="faq-view-count">(' . esc_html($view_count) . ')</span>';
                     echo '</h3>';
