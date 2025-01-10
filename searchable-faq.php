@@ -30,8 +30,11 @@ class SearchableFAQ {
         add_action('template_redirect', array($this, 'display_faq_single'));
         add_action('template_redirect', array($this, 'load_taxonomy_template'));
         add_action('wp_insert_post', array($this, 'set_default_view_count'), 10, 3);
+        remove_action('template_redirect', array($this, 'redirect_archive_to_page_by_slug'));
+        add_action('pre_get_posts', array($this, 'redirect_archive_to_page_by_slug'));
     }
 
+    
     public function register_faq_post_type(){
         
         $labels = array(
@@ -254,18 +257,6 @@ class SearchableFAQ {
         return $options;
     }
 
-    public function enqueue_faq_scripts() {
-        wp_enqueue_script('faq-scripts', plugins_url('js/searchable-faq-scripts.js', __FILE__), array('jquery'), '1.0', true);
-        wp_localize_script('faq-scripts', 'faqAjax', array('ajaxurl' => admin_url('admin-ajax.php')));
-    }
-
-    //CSS読み込み
-    public function enqueue_faq_styles() {
-        // プラグインのCSSをテーマより後に読み込む
-        wp_enqueue_style('theme-styles', get_stylesheet_uri());
-        wp_enqueue_style('faq-styles', plugins_url('css/searchable-faq-style.css', __FILE__), array('theme-styles'), '1.0', 'all');
-    
-    }
     //閲覧数カウントをセットする
     public function set_default_view_count($post_id, $post, $update) {
         if($post->post_type === 'faq' && !$update) {
@@ -281,6 +272,30 @@ class SearchableFAQ {
         }
     }
 
+    //JS読み込み
+    public function enqueue_faq_scripts() {
+        wp_enqueue_script('faq-scripts', plugins_url('js/searchable-faq-scripts.js', __FILE__), array('jquery'), '1.0', true);
+        wp_localize_script('faq-scripts', 'faqAjax', array('ajaxurl' => admin_url('admin-ajax.php')));
+    }
+
+    //CSS読み込み
+    public function enqueue_faq_styles() {
+        // プラグインのCSSをテーマより後に読み込む
+        wp_enqueue_style('theme-styles', get_stylesheet_uri());
+        wp_enqueue_style('faq-styles', plugins_url('css/searchable-faq-style.css', __FILE__), array('theme-styles'), '1.0', 'all');
+    
+    }
+
+    //アーカイブページをカスタムテンプレートにリダイレクト
+    public function redirect_archive_to_page_by_slug($query) {
+        if (!is_admin() && $query->is_main_query() && is_post_type_archive('faq')) {
+            $template = plugin_dir_path(__FILE__) . 'archive-faq.php';
+            if (file_exists($template)) {
+                include($template);
+                exit;
+            }
+        }
+    }
 }
 
 function searchable_faq_init() {
