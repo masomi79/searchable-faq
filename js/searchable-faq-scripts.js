@@ -1,8 +1,8 @@
 jQuery(document).ready(function($){
-    //アコーディオンの処理
+    //質問をクリックした時にクラスを追加
     $('.faq-question').click(function(){
-        console.log('clicked');
-        // $(this).parent('.faq-item').toggleClass('active');
+        $(this).toggleClass('active');
+        $(this).next().toggleClass('active-answer');
     });
 
     //リアルタイム検索

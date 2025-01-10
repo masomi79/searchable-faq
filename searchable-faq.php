@@ -32,6 +32,7 @@ class SearchableFAQ {
         add_action('wp_insert_post', array($this, 'set_default_view_count'), 10, 3);
         remove_action('template_redirect', array($this, 'redirect_archive_to_page_by_slug'));
         add_action('pre_get_posts', array($this, 'redirect_archive_to_page_by_slug'));
+        add_filter('template_include', array($this, 'load_custom_taxonomy_template'));
     }
 
     
@@ -270,6 +271,17 @@ class SearchableFAQ {
             include(plugin_dir_path(__FILE__) . 'taxonomy-faq_tag.php');
             exit;
         }
+    }
+
+    //カテゴリ用カスタムテンプレートを読み込む
+    public function load_custom_taxonomy_template($template) {
+        if (is_tax('faq_category')) {
+            $custom_template = plugin_dir_path(__FILE__) . 'taxonomy-faq_category.php';
+            if (file_exists($custom_template)) {
+                return $custom_template;
+            }
+        }
+        return $template;
     }
 
     //JS読み込み

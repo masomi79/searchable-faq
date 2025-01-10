@@ -23,6 +23,16 @@
     font-weight: bold;
 }
 
+.faq-container .faq-question::before {
+    content: "+";
+    float: left;
+    width: 1em;
+}
+
+.faq-container .faq-question.active::before {
+    content: "-";
+}
+
 .faq-container .faq-answer{
     background: #dfdfdf;
     overflow: hidden;
@@ -37,6 +47,10 @@
 .faq-single-container{
     margin: 0 auto 2rem;
     max-width: 1024px;
+}
+
+.faq-container .faq-answer .faq-tag-list{
+    float: left;
 }
 
 /*検索フォーム*/
