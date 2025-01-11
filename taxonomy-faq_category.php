@@ -10,7 +10,7 @@ get_header();
 do_action('wp_enqueue_scripts');
 
 ?>
-
+<div class="faq-archive">
 <div class="faq-taxonomy-archive">
     <h1 class="faq-main-title">よくある質問</h1>
     <div class="faq-container">
@@ -91,7 +91,7 @@ do_action('wp_enqueue_scripts');
     ?>
 </div>
 </div>
-
+</div>
 <?php
 get_footer();
 ?>
