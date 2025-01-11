@@ -8,6 +8,7 @@ get_header();
 do_action('wp_enqueue_scripts', array($this, 'enqueue_faq_styles'));
 do_action('wp_enqueue_scripts', array($this, 'enqueue_faq_scripts'));
 ?>
+<div class="faq-archive">
 <div class="faq-container">
     <h1 class="faq_tag-title">タグ:<?php single_term_title(); ?></h1>
     <div class="faq-list">
@@ -66,5 +67,6 @@ do_action('wp_enqueue_scripts', array($this, 'enqueue_faq_scripts'));
             <p>このタグのついたFAQはありません。</p>
         <?php endif; ?>
     </div>
+</div>
 </div>
 <?php get_footer(); ?>
