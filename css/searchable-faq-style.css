@@ -50,7 +50,19 @@
 }
 
 .faq-container .faq-answer .faq-tag-list{
+    margin: 1em 0;
+    padding: 0;
+}
+
+.faq-container .faq-answer .faq-tag-list .faq-tag,
+.faq-container .faq-answer .faq-tag-list .faq-tag-label{
     float: left;
+    list-style: none;
+    margin-right: .5em;
+}
+
+.faq-category-archive{
+    padding: 2em 0;
 }
 
 /*検索フォーム*/

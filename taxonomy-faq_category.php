@@ -6,10 +6,13 @@ Template Name: FAQ Category Archive
 get_header();
 
 
+// プラグインのCSSとJSを読み込む
+do_action('wp_enqueue_scripts');
 
 ?>
 
 <div class="faq-category-archive">
+    <div class="faq-container">
     <h1><?php single_term_title(); ?> のFAQ一覧</h1>
     <?php echo do_shortcode('[faq_search_form]'); ?>
 
@@ -32,6 +35,7 @@ get_header();
         $faq_query = new WP_Query($args);
 
         if ($faq_query->have_posts()) :
+            echo '<div class = "faq-category-archive">';
             while ($faq_query->have_posts()) : $faq_query->the_post();
                 $view_count = get_post_meta(get_the_ID(), 'faq_view_count', true);
                 $view_count = $view_count ? $view_count : 0; // 値がない場合は 0 とする
@@ -63,15 +67,14 @@ get_header();
                         }
 
                         the_content();
-                        ?>
-
-                        <?php
+                            
                         // 投稿に紐づく 'faq_tag' のタグをリストアップ
                         $faq_tags = get_the_terms(get_the_ID(), 'faq_tag');
                         if ($faq_tags && !is_wp_error($faq_tags)) {
                             echo '<ul class="faq-tag-list">';
+                            echo '<li class="faq-tag-label">タグ:</li>';
                             foreach ($faq_tags as $tag) {
-                                echo '<li><a href="' . esc_url(get_term_link($tag, 'faq_tag')) . '">' . esc_html($tag->name) . '</a></li>';
+                                echo '<li class="faq-tag"><a href="' . esc_url(get_term_link($tag, 'faq_tag')) . '">' . esc_html($tag->name) . '</a></li>';
                             }
                             echo '</ul>';
                         }
@@ -86,6 +89,7 @@ get_header();
         endif;
     }
     ?>
+</div>
 </div>
 
 <?php

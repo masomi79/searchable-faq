@@ -88,15 +88,14 @@ do_action('wp_enqueue_scripts', array($this, 'enqueue_faq_scripts'));
                             }
 
                             the_content(); 
-                            ?>
-
-                            <?php
+                            
                             // 投稿に紐づく 'faq_tag' のタグをリストアップ
                             $faq_tags = get_the_terms(get_the_ID(), 'faq_tag');
                             if ($faq_tags && !is_wp_error($faq_tags)) {
                                 echo '<ul class="faq-tag-list">';
+                                echo '<li class="faq-tag-label">タグ:</li>';
                                 foreach ($faq_tags as $tag) {
-                                    echo '<li><a href="' . esc_url(get_term_link($tag, 'faq_tag')) . '">' . esc_html($tag->name) . '</a></li>';
+                                    echo '<li class="faq-tag"><a href="' . esc_url(get_term_link($tag, 'faq_tag')) . '">' . esc_html($tag->name) . '</a></li>';
                                 }
                                 echo '</ul>';
                             }
