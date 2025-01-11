@@ -10,7 +10,7 @@ do_action('wp_enqueue_scripts', array($this, 'enqueue_faq_scripts'));
 ?>
 
 <div class="faq-archive">
-    <h1>よくある質問</h1>
+    <h1 class="faq-main-title">よくある質問</h1>
     <?php
     //検索フォームの表示
     echo do_shortcode('[faq_search_form]');

@@ -9,9 +9,12 @@ do_action('wp_enqueue_scripts', array($this, 'enqueue_faq_styles'));
 do_action('wp_enqueue_scripts', array($this, 'enqueue_faq_scripts'));
 ?>
 <div class="faq-archive">
-<div class="faq-container">
-    <h1 class="faq_tag-title">タグ:<?php single_term_title(); ?></h1>
-    <div class="faq-list">
+
+    <h1 class="faq-main-title">よくある質問</h1>
+    <div class="faq-container">
+    <h2 class="faq-tax-title">タグ:<?php single_term_title(); ?></h2>
+    <?php echo do_shortcode('[faq_search_form]'); ?>
+    <div class="faq-ctaxonomy-archive">
         <?php 
         if (have_posts()) : while (have_posts()) : the_post(); 
         

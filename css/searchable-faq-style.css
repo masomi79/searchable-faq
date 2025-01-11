@@ -2,6 +2,15 @@
     Searchable FAQ Style
 */
 
+.faq-main-title{
+    text-align: center;
+}
+
+.faq-tax-title{
+    text-align: center;
+    font-family: "Arial", sans-serif;
+}
+
 .faq-container{
     max-width: 100%;
 }
@@ -16,6 +25,10 @@
 
 .faq-container {
     margin: 3em;
+}
+
+.faq-ctaxonomy-archive{
+    padding: 2em 0;
 }
 
 .faq-container .faq-question {

@@ -11,12 +11,12 @@ do_action('wp_enqueue_scripts');
 
 ?>
 
-<div class="faq-category-archive">
+<div class="faq-taxonomy-archive">
+    <h1 class="faq-main-title">よくある質問</h1>
     <div class="faq-container">
-    <h1><?php single_term_title(); ?> のFAQ一覧</h1>
-    <?php echo do_shortcode('[faq_search_form]'); ?>
+    <h2 class="faq-tax-title">カテゴリ：<?php single_term_title(); ?></h2>
+    <?php echo do_shortcode('[faq_search_form]'); 
 
-    <?php
     $term = get_queried_object();
 
     if ($term && !is_wp_error($term)) {
@@ -35,7 +35,7 @@ do_action('wp_enqueue_scripts');
         $faq_query = new WP_Query($args);
 
         if ($faq_query->have_posts()) :
-            echo '<div class = "faq-category-archive">';
+            echo '<div class = "faq-ctaxonomy-archive">';
             while ($faq_query->have_posts()) : $faq_query->the_post();
                 $view_count = get_post_meta(get_the_ID(), 'faq_view_count', true);
                 $view_count = $view_count ? $view_count : 0; // 値がない場合は 0 とする
