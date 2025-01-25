@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Searchable FAQ
+* Plugin Name: Searchable FAQ
 Plugin URI: http://github.com/masomi79/sarchable-faq
 Description: A simple FAQ plugin that allow you to create, search and display FAQs.
 Version: 1.0

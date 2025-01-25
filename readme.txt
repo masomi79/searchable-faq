@@ -1,5 +1,5 @@
 === Searchable FAQ ===
-Contributors: yourusername
+Contributors: masomi79
 Tags: faq, search, searchable
 Requires at least: 5.0
 Tested up to: 6.7
