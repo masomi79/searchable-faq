@@ -2,12 +2,24 @@
 /*
 Plugin Name: Searchable FAQ
 Plugin URI: http://github.com/masomi79/sarchable-faq
-Description: A simple FAQ plugin for WordPress
-Version: 7.5.8.2
+Description: A simple FAQ plugin that allow you to create, search and display FAQs.
+Version: 1.0
 Author: masomi79
 Author URI: https://massumifukuda.work/wp/
 License: GPL2
+Copyright 2025 masomi79 (email : masomi79@gmail.com)
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License, version 2, as
+published by the Free Software Foundation.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
+
 namespace SearchableFAQ;
 
 use WP_Query;
@@ -177,11 +189,11 @@ class SearchableFAQ {
                     $view_count = get_post_meta(get_the_ID(), 'faq_view_count', true);
                     $view_count = $view_count ? $view_count : '0';
     
-                    echo '<div class="faq-item" data-post-id="' . get_the_ID() . '">';
-                    echo '<h3 class="faq-question">' . get_the_title();
+                    echo '<div class="faq-item" data-post-id="' . esc_attr(get_the_ID()) . '">';
+                    echo '<h3 class="faq-question">' . esc_html(get_the_title());
                     echo '<span class="faq-view-count">(' . esc_html($view_count) . ')</span>';
                     echo '</h3>';
-                    echo '<div class="faq-answer">' . $content . '</div>';
+                    echo '<div class="faq-answer">' . esc_html($content) . '</div>';
                     echo '</div>';
                 endwhile;
     
@@ -208,8 +220,8 @@ class SearchableFAQ {
             get_header();
             echo '<div class="site-main entry-content has-global-padding">';
             echo '<div class="faq-single-container">';
-            echo '<h1 class="faq-question">' . get_the_title() . '</h1>';
-            echo '<div class="faq-answer">' . $post->post_content . '</div>';
+            echo '<h1 class="faq-question">' . esc_html(get_the_title()) . '</h1>';
+            echo '<div class="faq-answer">' . esc_html($post->post_content) . '</div>';
 
             //タグの処理
             echo '<div class="faq-tags">';
@@ -222,15 +234,15 @@ class SearchableFAQ {
                     $tag_links[] = '<a href="' . esc_url(get_term_link($tag)) . '">' . esc_html($tag->name) . '</a>';
                 }
 
-                echo '<p>Tags :' . implode(', ', $tag_links) . '</p>';
+                echo '<p>Tags :' . implode(', ', array_map('esc_url', $tag_links)) . '</p>';
             }else{
                 echo '<br class="notags">';
             }
 
             echo '</div>';
 
-            echo '<p><a href="' . home_url('/faq-p') . '">戻る</a></p>';
-            echo '<p>閲覧数：' . $view_count . '</p>';
+            echo '<p><a href="' . esc_url(home_url('/faq-p')) . '">戻る</a></p>';
+            echo '<p>閲覧数：' . esc_html($view_count) . '</p>';
             echo '</div>';
             echo '</div>';
 
@@ -324,7 +336,7 @@ function increment_faq_view_count() {
         $view_count = get_post_meta($post_id, 'faq_view_count', true);
         $view_count = $view_count ? $view_count + 1 : 1;
         update_post_meta($post_id, 'faq_view_count', $view_count);
-        echo $view_count;
+        echo esc_html($view_count);
     }
     wp_die();
 }

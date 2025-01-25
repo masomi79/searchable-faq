@@ -40,7 +40,7 @@ do_action('wp_enqueue_scripts');
                 $view_count = get_post_meta(get_the_ID(), 'faq_view_count', true);
                 $view_count = $view_count ? $view_count : 0; // 値がない場合は 0 とする
                 ?>
-                <div class="faq-item" data-post-id="<?php echo get_the_ID(); ?>">
+                <div class="faq-item" data-post-id="<?php echo esc_attr(get_the_ID()); ?>">
                     <h3 class="faq-question">
                         <?php the_title(); ?>
                         <span class="faq-view-count">(<?php echo esc_html($view_count); ?>)</span>
@@ -55,14 +55,14 @@ do_action('wp_enqueue_scripts');
                             $ancestors = array_reverse($ancestors);
 
                             echo '<div class="faq-breadcrumb">';
-                            echo '<a href="' . get_post_type_archive_link('faq') . '">FAQ</a> > ';
+                            echo '<a href="' . esc_url(get_post_type_archive_link('faq')) . '">FAQ</a> > ';
 
                             foreach ($ancestors as $ancestor) {
                                 $parent_term = get_term($ancestor, 'faq_category');
-                                echo '<a href="' . get_term_link($parent_term) . '">' . esc_html($parent_term->name) . '</a> > ';
+                                echo '<a href="' . esc_url(get_term_link($parent_term)) . '">' . esc_html($parent_term->name) . '</a> > ';
                             }
 
-                            echo '<a href="' . get_term_link($term) . '">' . esc_html($term->name) . '</a>';
+                            echo '<a href="' . esc_url(get_term_link($term)) . '">' . esc_html($term->name) . '</a>';
                             echo '</div>';
                         }
 
